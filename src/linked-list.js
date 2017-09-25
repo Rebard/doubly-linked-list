@@ -1,5 +1,4 @@
 const Node = require('./node');
-
 class LinkedList {
 	
     constructor() {
@@ -41,10 +40,6 @@ class LinkedList {
 
     at(index) {
 		var temp = this._head;
-		if((index > this.length - 1) || (index < 0))
-		{
-			return;
-		}
 		for(var i = 0;i < index;i++)
 		{
 			temp = temp.next;
@@ -53,30 +48,33 @@ class LinkedList {
 	}
 
     insertAt(index, data) {
-		var temp = this._head, temp1 = null;
+		var temp;
 		var insert_temp = new Node(data);
-		if(index > this.length - 1)
-		{
-			return this;
-		}
 		if(index === 0)
 		{
-			this._head.prev = insert_temp;
-			insert_temp.next = this._head;
-			insert_temp.prev = null;
-			this._head = insert_temp;
+			if(this.length === 0)
+			{
+				insert_temp.next = insert_temp.prev = null;
+				this._head = this._tail = insert_temp;
+			}
+			else{
+				this._head.prev = insert_temp;
+				insert_temp.next = this._head;
+				insert_temp.prev = null;
+				this._head = insert_temp;
+			}
 		}
 		else{
-			for(var i = 0;i < index;i++)
-			{
-				temp = temp.next;
+				temp = this._head;
+				for(var i = 0;i < index;i++)
+				{
+					temp = temp.next;
+				}
+				temp.prev.next = insert_temp;
+				temp.prev = insert_temp;
+				insert_temp.prev = temp.prev;
+				insert_temp.next = temp;
 			}
-			//temp1 = temp.prev;
-			temp.prev.next = insert_temp;
-			temp.prev = insert_temp;
-			insert_temp.prev = temp.prev;
-			insert_temp.next = temp;
-		}
 		return this;
 	}
 
